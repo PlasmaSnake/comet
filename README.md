@@ -10,7 +10,11 @@ Dummy Data: Bitcoin information collected from the API using the CryptoCollector
 
 ### Technologies used:
 * Java
+* Spring
+* Maven
 * HTML/CSS
+* JUnit
+* Oracle SQL
 * Python
 
 ## Free Licenses / Packages used
