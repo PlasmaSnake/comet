@@ -33,7 +33,7 @@ low_price DECIMAL(10,2) NOT NULL,
 volumeTo NUMERIC NOT NULL,
 volumeFrom NUMERIC NOT NULL,
 total_supply NUMERIC,
-CONSTRAINT coin_id_fk FOREIGN KEY(coin_id) REFERENCES coinbasicinfo(coin_id)
+CONSTRAINT coin_id_historical_fk FOREIGN KEY(coin_id) REFERENCES coinbasicinfo(coin_id)
 );
 
 COMMIT;

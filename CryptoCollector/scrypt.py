@@ -2,7 +2,8 @@
 # scrypt.py - Queries the CRYPTOCOMPARE API using a package by lagerfeuer
 # Scripted by Michael Matthew Sy 'github.com/PlasmaSnake'
 # Currently outputs to Data and replaces BTCHistDaily.
-# Meant to only be run one time.
+# Meant to only be run one time for each Coin.
+# 
 
 from datetime import datetime
 import time
@@ -11,10 +12,7 @@ from urllib.request import urlopen
 import json
 import requests
 import os
-import sched
-import cryptocompare
 
-s=sched.scheduler(time.time, time.sleep)
 ts = time.time()
 
 ## This API call only receives the following Data in USD:
@@ -26,26 +24,69 @@ ts = time.time()
 ## volumefrom: Volume from BTC to USD traded (ex: 33000 coins were traded into USD)
 ## volumeto: Volume to USD from BTC (ex: 20 mil USD were traded into BTC)
 
+## TODO:
+## refine script so it stops when it gets to a response with each argument as 0 
+## 
+##
+timesRan = 0;
+lastKnownTime = 0;
+lastKnownResponse = "";
+
+def cryptocompareRequest(coin): # Change coin symbol to retrieve a different coin
+	# Queries from current time to last recorded time from responses
+	if timesRan < 1 : 
+		queryCoin(coin, int(ts))
+	else :
+		queryCoin(coin, lastKnownTime)
+
 def queryCoin(coin, queryTime):
-#BTC
-	url = urlopen('https://min-api.cryptocompare.com/data/histoday?fsym='+coin+'&tsym=USD&limit=2000&toTs='+str(queryTime)+'&extraParams=COMETCOINAPP')
+	url = urlopen('https://min-api.cryptocompare.com/data/histoday?fsym='+coin+'&tsym=USD&limit=500&toTs='+str(queryTime)+'&extraParams=COMETCOINAPP')
 	resp = json.loads(url.read().decode('utf-8'))
-	with open(os.path.join('c:\home\comet\cryptocollector\data','BTCHistDaily'+'.txt'), 'w') as outfile:
+	dirPath = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data', coin)
+	lastKnownResponse = os.path.join(dirPath, coin+'HistDaily'+str(timesRan)+'.json')
+
+	try :
+	# create target directory(ies)
+		os.makedirs(dirPath)
+	except FileExistsError:
+		pass
+
+	with open(lastKnownResponse, 'w') as outfile:
 		json.dump(resp, outfile)
-
-def queryCoinFrom2013(coin):
-#BTC
-	url = urlopen('https://min-api.cryptocompare.com/data/histoday?fsym='+coin+'&tsym=USD&limit=1100&toTs=1368540000&extraParams=COMETCOINAPP')
-	resp = json.loads(url.read().decode('utf-8'))
-	with open(os.path.join('c:\home\comet\cryptocollector\data','BTCHistDaily-May14_2013'+'.txt'), 'w') as outfile:
-		json.dump(resp, outfile)
-
-def cryptocompareRequest():
-	# Queries from current time
-	queryCoin('BTC', int(ts));
-	# Queries from May 14 2013
-	queryCoinFrom2013('BTC');
+	# records the time of query and inserts for the next one
+	readLastTimeOfQuery(coin)
 
 
-s.enter(1, 1, cryptocompareRequest, ())
-s.run()
+## Reads JSON response from cyptocompare and if returns true, stop the script.
+## returns true if values are 0
+def endOfRequest(coin):
+	dirPath = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data', coin)
+	lastKnownResponse = os.path.join(dirPath, coin+'HistDaily'+str(timesRan)+'.json')
+	with open(lastKnownResponse, 'r') as data:
+		data = json.load(data)
+	if ( ## simple checker for 
+		data["Data"][0]['close'] == 0 and data["Data"][0]['high'] == 0 and
+		data["Data"][0]['low'] == 0 and data["Data"][0]['open'] == 0
+		):
+		return True
+	else:
+		increment() ## increments timesRan for next request
+		return False
+
+## Reads the first element of JSON response for the time for next queryCoin
+def readLastTimeOfQuery(coin):
+	dirPath = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data', coin)
+	lastKnownResponse = os.path.join(dirPath, coin+'HistDaily'+str(timesRan)+'.json')
+	with open(lastKnownResponse, 'r') as readfile:
+		data = json.load(readfile)
+	global lastKnownTime
+	lastKnownTime = int(data["Data"][0]['time'])
+
+def increment():
+	global timesRan
+	timesRan += 1
+
+## takes all information and runs until it reaches end of coin's history
+cryptocompareRequest('ETH')
+while not endOfRequest('ETH'):
+	cryptocompareRequest('ETH')
