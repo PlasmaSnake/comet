@@ -9,11 +9,8 @@ For now, my goal is to create a prototype with dummy data but I aim to use the A
 Dummy Data: Bitcoin information collected from the API using the CryptoCollector/script.py file, and the python package made by lagerfeuer.
 
 TODO:
-	1. Functional Requirements
-	2. Model schema
-	3. AWS Database dummy data injection - alter table for symbols varchar 5 to 10
-		3a. create a script for injection
-	4. Wireframe for front end
+1. Model schema
+2. Wireframe for front end
 
 ### Technologies used:
 * Java
