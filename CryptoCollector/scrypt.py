@@ -86,7 +86,39 @@ def increment():
 	global timesRan
 	timesRan += 1
 
-## takes all information and runs until it reaches end of coin's history
-cryptocompareRequest('ETH')
-while not endOfRequest('ETH'):
-	cryptocompareRequest('ETH')
+def cryptocompareCoinToUSDRequest(coin):
+	url = urlopen('https://min-api.cryptocompare.com/data/pricemultifull?fsyms='+coin+'&tsyms=USD&extraParams=COMETCOINAPP')
+	# change to get basic info
+	resp = json.loads(url.read().decode('utf-8'))
+	dirPath = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data', coin)
+	filePath = os.path.join(dirPath, coin+'ToUSDInfo.json')
+	try :
+	# create target directory(ies)
+		os.makedirs(dirPath)
+	except FileExistsError:
+		pass
+
+	with open(filePath, 'w') as outfile:
+		json.dump(resp, outfile)
+
+def cryptocompareAllCoinRequest():
+	url = urlopen('https://min-api.cryptocompare.com/data/all/coinlist')
+	# change to get basic info
+	resp = json.loads(url.read().decode('utf-8'))
+	dirPath = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
+	filePath = os.path.join(dirPath, 'AllCoins.json')
+	try :
+	# create target directory(ies)
+		os.makedirs(dirPath)
+	except FileExistsError:
+		pass
+
+	with open(filePath, 'w') as outfile:
+		json.dump(resp, outfile)
+
+cryptocompareAllCoinRequest()
+# coin = 'BTC'
+# cryptocompareCoinToUSDRequest(coin)
+# cryptocompareRequest(coin)
+# while not endOfRequest(coin):
+# 	cryptocompareRequest(coin)

@@ -30,9 +30,8 @@ open_price DECIMAL(10,2) NOT NULL,
 close_price DECIMAL(10,2) NOT NULL,
 high_price DECIMAL(10,2) NOT NULL,
 low_price DECIMAL(10,2) NOT NULL,
-volumeTo NUMERIC NOT NULL,
-volumeFrom NUMERIC NOT NULL,
-total_supply NUMERIC,
+volumeTo NUMERIC(20, 2) NOT NULL,
+volumeFrom NUMERIC(20, 2) NOT NULL,
 CONSTRAINT coin_id_historical_fk FOREIGN KEY(coin_id) REFERENCES coinbasicinfo(coin_id)
 );
 
