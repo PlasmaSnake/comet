@@ -12,7 +12,7 @@ CREATE TABLE coinbasicinfo(
 coin_id NUMERIC GENERATED ALWAYS AS IDENTITY( START WITH 1 INCREMENT BY 1) NOT NULL,
 symbol varchar(5) UNIQUE NOT NULL,
 coin_name varchar(20) UNIQUE NOT NULL,
-max_supply DECIMAL(10,4) NOT NULL,
+max_supply DECIMAL(30,4) NOT NULL,
 CONSTRAINT coin_id_pk PRIMARY KEY(coin_id)
 );
 
