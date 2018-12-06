@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page import="comet.beans.Users"%>
+<%@ page import="comet.beans.User"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,9 +8,9 @@
 <title>Comet Coin App</title>
 </head>
 <%
-// if user stuff doesn't == user stuff
+	// if user stuff doesn't == user stuff
 if(request.getParameter("login")!=null){
-	Users user = new Users();
+	User user = new User();
 	user.setUsername(request.getParameter("userName"));
 	user.setPassword(request.getParameter("password"));
 	if ("test".equals(user.getUsername()) && "password".equals(user.getPassword())){

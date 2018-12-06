@@ -4,17 +4,17 @@ import java.util.TreeMap;
 
 import comet.beans.DAO.SQLDataRequestDAO;
 
-public class Coins {
+public class Coin {
 	private int coin_id;
 	private String symbol;
 	private String coinName;
 	private double maxSupply;
 	private TreeMap<Long, HistData> dataPoints;
 	
-	public Coins(){
+	public Coin(){
 	}
 	
-	public Coins(int coin_id, String symbol, String coinName, double maxSupply) {
+	public Coin(int coin_id, String symbol, String coinName, double maxSupply) {
 		this.coin_id = coin_id;
 		this.symbol = symbol;
 		this.coinName = coinName;

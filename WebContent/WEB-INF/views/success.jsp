@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page import="comet.beans.Users"%>
+<%@ page import="comet.beans.User"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,8 +8,8 @@
 <title>Login Success!</title>
 </head>
 <%
-	Users user = (Users)request.getAttribute("user");
-	%>
+	User user = (User)request.getAttribute("user");
+%>
 <body>
 	<h1>Header</h1>
 	<hr>

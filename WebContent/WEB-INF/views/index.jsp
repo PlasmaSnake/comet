@@ -1,6 +1,7 @@
+<%@page import="comet.beans.DAO.SQLDataRequestDAO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page import="comet.beans.*" %>
+<%@ page import="comet.beans.*, java.util.ArrayList" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,13 +20,15 @@
 <body>
 <%
 	// do sql gathering in here and put basic data into a coin. 
-	Coins c = new Coins();
+	ArrayList<Coin> coinList = new ArrayList<Coin>();
+	String[] coinSymbols = {"BTC", "ETH", "42"};
+	SQLDataRequestDAO sqlDataRequestDAO = new SQLDataRequestDAO();
+	for (String s: coinSymbols) {
+		Coin coin = sqlDataRequestDAO.getBasicInfo(s);
+		if (coin != null) coinList.add(coin);
+	}
 	// then do more sql gathering for inserting data
-	
 %>
-
-
-
 	<div class="container">
 		<br />
 		<div class="alert alert-success">
@@ -40,17 +43,20 @@
 	      <th scope="col">Coin Name</th>
 	      <th scope="col">High</th>
 	      <th scope="col">Low</th>
+	      <th scope="col">Max Supply</th>
 	    </tr>
 	  </thead>
 	  <tbody>
-	  	<c:forEach items="${coinList}" var="item">
+		<% for(Coin c :coinList){%>
 		    <tr>
-		      <th scope="row">${item.getSymbol() }</th>
-		      <td>${item.getCoinName() }</td>
-		      <td>1</td>
-		      <td>-1</td>
+		    <%--TODO: ADD a link to specific coin page --%>
+		      <th scope="row"><%=c.getSymbol()%></th>
+		      <td><%=c.getCoinName()%></td>
+		      <td>$$$$.$$</td>
+		      <td>$$$$.$$</td>
+		      <td><%=String.format("%.2f",c.getMaxSupply())%></td>
 		    </tr>
-	    </c:forEach>
+	    <%} // end of coin list table %>
 	  </tbody>
 	</table>
 	

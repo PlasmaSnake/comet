@@ -1,14 +1,24 @@
 package comet.beans;
 
-public class Users {
+import java.util.Set;
+
+public class User {
 	private String username;
 	private String password;
+	private Set<String> savedCoins;
 	
-	public Users() {
+	public Set<String> getSavedCoins() {
+		return savedCoins;
+	}
+	
+	public void insertSavedCoin(String coinSymbolToSave) {
+		savedCoins.add(coinSymbolToSave);
+	}
+	public User() {
 		username = "admin";
 		password = "abc123";
 	}
-	public Users(String username, String password){
+	public User(String username, String password){
 		this.password = password;
 		this.username = username;
 	}
