@@ -11,17 +11,19 @@ Dummy Data: Bitcoin information collected from the API using the CryptoCollector
 TODO:
 1. Model schema 
 2. Wireframe for front end and user stories
-3. E/R Diagram and user stories
+3. Develop DAO for coin list
+4. Display coin list
 
 ### Technologies used:
 * Java
-* Spring
+* Spring MVC
 * Maven
 * HTML/CSS
-* JUnit
+* JSP
 * Oracle SQL
 * Python
 * Jira
+* JUnit
 
 ## Free Services / Third Party software used
 
