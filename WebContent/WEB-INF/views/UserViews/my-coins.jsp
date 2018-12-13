@@ -1,42 +1,35 @@
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="comet.beans.DAO.SQLDataRequestDAO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ page import="comet.beans.*, java.util.TreeMap, java.util.Map.Entry, java.util.Date, java.util.ArrayList" %>
-<%
-	ArrayList<Coin> coinList = new ArrayList<Coin>();
-	SQLDataRequestDAO sqlDataRequestDAO = new SQLDataRequestDAO();
-	//TODO Set up user coins registration, and deletion.
-	//TreeMap<String, HistData> latestData = sqlDataRequestDAO.getAllCoinsLatestHistoricalData();
-	for (Entry<String, HistData> e: latestData.entrySet()) {
-		Coin coin = sqlDataRequestDAO.getBasicInfo(e.getKey());
-		coinList.add(coin);
-	}
-%>
-	<table class="table table-striped">
-	  <thead>
-	    <tr>
-	      <th scope="col">Coin Symbol</th>
-	      <th scope="col">Coin Name</th>
-	      <th scope="col">Latest Day High</th>
-	      <th scope="col">Latest Day Low</th>
-	      <th scope="col">Max Supply</th>
-	      <th scope="col"></th>
-	    </tr>
-	  </thead>
-	  <tbody>
-		<% for(Coin c: coinList){
-			String symbol = c.getSymbol();
-		%>
-		    <tr class='clickable-row' data-href='/comet/coininfo?coin=${symbol}'>
-		    <%--TODO: ADD a link to specific coin page --%>
-		      <th scope="row"><% out.print(symbol); %></th>
-		      <td><%=c.getCoinName()%></td>
-		      <td>$<%=String.format("%,.2f",latestData.get(symbol).getHigh()) %></td>
-		      <td>$<%=String.format("%,.2f",latestData.get(symbol).getLow()) %></td>
-		      <td><%=String.format("%,.2f",c.getMaxSupply())%></td>
-		      <td>Last updated on <%=new SimpleDateFormat("yyyy-MM-dd").format(new Date(latestData.get(symbol).getTimestamp()*1000))%></td>
-		    </tr>
-	    <%} // end of coin list table %>
-	  </tbody>
-	</table>
+	pageEncoding="ISO-8859-1"%>
+<%@page import="comet.beans.DAO.SQLDataRequestDAO"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comet Coin Tracker</title>
+<link href="<c:url value="/resources/stylesheets/css/style.css"/>" type="text/css" rel="stylesheet" />
+<!-- Bootstrap -->
+<link href="<c:url value="/resources/bootstrap/4.1.3/css/bootstrap.min.css"/>" rel="stylesheet" />
+</head>
+<header> 
+<%@include file="navbar-user.jsp" %>
+</header>
+<body>
+	<div class="container">
+		<br />
+		<div class="alert alert-success">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+			Here is you personalized coin list!
+		</div>
+	</div>
+	
+	<%@include file ="my-coins-list.jsp" %>
+	
+	<script src="<c:url value="/resources/bootstrap/jquery.min.js"/>"></script>
+	<script src="<c:url value="/resources/popper/popper.min.js"/>"></script>
+	<script src="<c:url value="/resources/bootstrap/4.1.3/js/bootstrap.min.js"/>"></script>
+</body>
+<%@include file="../footer.jsp" %>
+</html>

@@ -24,11 +24,11 @@
 					<tr><td>Modify your account:</td></tr>
 					<tr>
 						<td>Old password: </td>
-						<td><form:input type="password" path="password" name="password" placeholder="6261abcd"/></td>
+						<td><form:input type="password" path="oldpassword" name="oldpassword" placeholder="6261abcd"/></td>
 					</tr>
 					<tr>
 						<td>New Password: </td>
-						<td><form:input type="password" path="password" name="password" placeholder="6261abcd"/></td>
+						<td><form:input type="password" path="password" name="password" placeholder="abcd6261"/></td>
 					</tr>
 					<tr>
 						<td>Change Primary E-mail: </td>
@@ -42,9 +42,10 @@
 						<td>Country: </td>
 						<td><input type="text" name="country" placeholder="optional"/></td>
 					</tr>
-					<tr><td colspan="2"><form:errors path="username" cssStyle="color:red;"/></td></tr>
+					<tr><td colspan="2"><form:errors path="oldpassword" cssStyle="color:red;"/></td></tr>
 					<tr><td colspan="2"><form:errors path="password" cssStyle="color:red;"/></td></tr>
 					<tr><td colspan="2"><form:errors path="email" cssStyle="color:red;"/></td></tr>
+					<tr><td colspan="2">${input_error}${pass_changed}</td></tr>
 				</table>
 				<div style="text-align:center; margin:2px;">
 			        <button type="submit" name="signup" value="signup" class="btn btn-primary">Sign Up</button>

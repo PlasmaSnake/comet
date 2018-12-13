@@ -21,7 +21,7 @@
 		<br />
 		<div class="alert alert-success">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-			Welcome, ${userLoggedIn.getUsername() }!
+			Welcome, ${userLoggedIn.getUsername()}!
 		</div>
 	</div>
 	
