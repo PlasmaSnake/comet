@@ -4,8 +4,6 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="comet.beans.*, java.util.TreeMap, java.util.Map.Entry, java.util.Date, java.util.ArrayList" %>
 <%
-	// do sql gathering in here and put basic data into a coin. 
-	// maybe make cookies to prevent
 	ArrayList<Coin> coinList = new ArrayList<Coin>();
 	SQLDataRequestDAO sqlDataRequestDAO = new SQLDataRequestDAO();
 	TreeMap<String, HistData> latestData = sqlDataRequestDAO.getAllCoinsLatestHistoricalData();
@@ -13,16 +11,7 @@
 		Coin coin = sqlDataRequestDAO.getBasicInfo(e.getKey());
 		coinList.add(coin);
 	}
-	// then do more sql gathering for inserting data
 %>
-	<div class="container">
-		<br />
-		<div class="alert alert-success">
-			<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-			<strong>Note: </strong> A max supply of 0 means there is no maximum.
-		</div>
-	</div>
-	
 	<table class="table table-striped">
 	  <thead>
 	    <tr>

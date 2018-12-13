@@ -15,7 +15,7 @@ public class User {
 	private String username;
 	
 	@NotNull
-	@Size(min=5, max=50, message= "Password must be longer than {2} characters")
+	@Size(min=4, max=50, message= "Password must be longer than {2} characters")
 	private String password;
 	
 	@Email

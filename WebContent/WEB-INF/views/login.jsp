@@ -22,12 +22,12 @@
 					<tr><td colspan="2"><form:errors path="username" cssStyle="color:red;"/></td></tr>
 					<tr>
 						<td>User Name: </td>
-						<td><form:input type="text" id = "username" name="username" path="username" placeholder="apple1234"/></td>
+						<td><form:input type="text" id = "username" name="username" path="username" placeholder="apple1234" required="required"/></td>
 					</tr>
 					<tr><td colspan="2"><form:errors path="password" cssStyle="color:red;"/></td></tr>
 					<tr>
 						<td>Password: </td>
-						<td><input type="password" name="password" placeholder="6261abcd"/></td>
+						<td><form:input type="password" name="password" path ="password" placeholder="6261abcd" required="required"/></td>
 					</tr>
 				</table>
 			</div>

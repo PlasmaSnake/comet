@@ -11,9 +11,6 @@
       <li class="nav-item">
         <a class="nav-link" href="Contact">Contact Us</a>
       </li>
-      <li class="nav-item">
-		<a class="nav-link" href="logout">Log Out</a>
-      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Account
@@ -23,6 +20,9 @@
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Settings</a>
         </div>
+      </li>
+      <li class="nav-item">
+		<a class="nav-link" href="../logout">Log Out</a>
       </li>
     </ul>
   </div>

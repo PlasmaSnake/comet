@@ -1,5 +1,7 @@
 package comet.Controllers;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -14,7 +16,7 @@ import comet.beans.User;
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes("userModel, loggedIn")
+@SessionAttributes("userModel")
 public class HomeController {
 	
 	@RequestMapping("")
@@ -22,19 +24,36 @@ public class HomeController {
 		ModelAndView mav = new ModelAndView("index");
 		return mav;
 	}
-	
 
-	//TODO implement - test database for matching user/pw
-	//TODO optional: fix modal and false input upon form submission interaction
 	@RequestMapping(value = "/login_process", method=RequestMethod.POST)
-	public ModelAndView processLogin(@ModelAttribute("userModel") @Valid User u, BindingResult errors) {
+	public ModelAndView processLoginFromModal(@ModelAttribute("userModel") @Valid User u, BindingResult errors) {
 		if(errors.hasErrors()) {
 			ModelAndView mav = new ModelAndView("signup");
-			mav.addObject("login_error", "Username or password incorrect. Create an account or retry login!");
+			mav.addObject("login_error", "Sign up or retry login.");
 			return mav;
 		}
 		ModelAndView mav = new ModelAndView("loginProcess");
-		mav.addObject("user", u);
+		mav.addObject("login_error", "Username or password incorrect.");
+		mav.addObject("userLoggedIn", u);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/login_page_process", method=RequestMethod.POST)
+	public ModelAndView processLoginFromPage(@ModelAttribute("userModel") @Valid User u, BindingResult errors) {
+		if(errors.hasErrors()) {
+			ModelAndView mav = new ModelAndView("loginProcess");
+			mav.addObject("login_error", "Username or password incorrect.");
+			return mav;
+		}
+		ModelAndView mav = new ModelAndView("loginProcess");
+		mav.addObject("login_error", "Username or password incorrect.");
+		mav.addObject("userLoggedIn", u);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/login_success", method=RequestMethod.GET)
+	public ModelAndView successfulLogin(@ModelAttribute("userModel") @Valid User u) {
+		ModelAndView mav = new ModelAndView("loginSuccess");
 		return mav;
 	}
 	
@@ -60,17 +79,16 @@ public class HomeController {
 		return mav;
 	}
 	
-	@RequestMapping("/success")
-	public ModelAndView successLogin(@ModelAttribute("loggedIn") boolean loggedIn ) {
-		
-		ModelAndView mav = new ModelAndView("index");
-		
-		return mav;
-	}
-	
 	@RequestMapping("/home")
 	public ModelAndView backIndex() {
 		return new ModelAndView("index");
+	}
+	
+	@RequestMapping("/logout")
+	public ModelAndView logout(HttpServletRequest request) {
+		HttpSession httpSession = request.getSession();
+	    httpSession.invalidate();
+		return new ModelAndView("redirect:/");
 	}
 	
 	@ModelAttribute("userModel")

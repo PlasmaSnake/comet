@@ -16,6 +16,13 @@
 <%@include file="navbar.jsp" %>
 </header>
 <body>
+	<div class="container">
+		<br />
+		<div class="alert alert-success">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+			<strong>Note: </strong> A Max Supply of 0 means infinite supply.
+		</div>
+	</div>
 	<%@include file ="coin-list.jsp" %>
 	
 	<script src="<c:url value="/resources/bootstrap/jquery.min.js"/>"></script>

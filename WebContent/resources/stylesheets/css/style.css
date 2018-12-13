@@ -4,9 +4,19 @@ h3 {
 
 a {
 	text-align:center;
-	
 }
 
 div {
 	text-align:center;
+}
+
+.error-msg {
+	margin: 5px 0px 0px 0px; 
+	text-align: center;
+	color: red;
+}
+
+.content-area {
+	margin: 5px 0px 20% 0px; 
+	text-align: center;
 }

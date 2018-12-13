@@ -14,9 +14,6 @@
       <li class="nav-item">
         <a class="nav-link" href="Contact">Contact Us</a>
       </li>
-      <li class="nav-item">
-         <%@include file="login.jsp" %>
-      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Account
@@ -27,7 +24,8 @@
           <a class="dropdown-item" href="#">Settings</a>
         </div>
       </li>
-      <li>
+      <li class="nav-item">
+         <%@include file="login.jsp" %>
       </li>
     </ul>
   </div>

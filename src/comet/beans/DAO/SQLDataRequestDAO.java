@@ -40,10 +40,8 @@ public class SQLDataRequestDAO extends ConnectionAbstractDAO implements SQLDataR
 			ps = conn.prepareStatement(SQL.REQUEST_ACCOUNT_DATA.getQuery());
 			ps.setString(1, username);
 			rs = ps.executeQuery();
-			System.out.println("result set");
 			// if username is found in the database, check the password of that data
 			if(rs.next()) {
-				System.out.println("I have gotten a result");
 				user = new User(
 						rs.getString(2),//username
 						rs.getString(3),//password

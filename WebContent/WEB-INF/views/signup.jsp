@@ -10,6 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <title>Comet Coin Tracker</title>
+<link href="<c:url value="/resources/stylesheets/css/style.css"/>" type="text/css" rel="stylesheet" />
 <!-- Bootstrap -->
 <link href="<c:url value="/resources/bootstrap/4.1.3/css/bootstrap.min.css"/>" rel="stylesheet" />
 </head>
@@ -17,21 +18,21 @@
 	<%@include file="navbar.jsp" %>
 </header>
 <body>
-	<div style="margin: 5px 0px 20% 0px; text-align:center;">
+	<div class ="error-msg">${login_error }</div>
+	<div class="content-area">
 		<form:form action="signup_process" method="post" modelAttribute="userModel">
 				<table style="margin: 0px auto;">
 					<tr>
 						<td>User Name: </td>
-						<td><form:input type="text" path="username" name="username" placeholder="apple1234"/></td>
+						<td><form:input type="text" path="username" name="username" placeholder="apple1234" required="required"/></td>
 					</tr>
 					<tr>
 						<td>Password: </td>
-						<td><form:input type="password" path="password" name="password" placeholder="6261abcd"/></td>
+						<td><form:input type="password" path="password" name="password" placeholder="6261abcd" required="required"/></td>
 					</tr>
-					<tr><td colspan="2"> <form:errors path="email" cssStyle="color:red;"/></td></tr>
 					<tr>
 						<td>E-mail: </td>
-						<td><form:input type="text" path="email" name="email" placeholder="a1@domain.com"/></td>
+						<td><form:input type="text" path="email" name="email" placeholder="a1@domain.com" required="required"/></td>
 					</tr>
 					<tr>
 						<td>Name: </td>
@@ -43,6 +44,7 @@
 					</tr>
 					<tr><td colspan="2"><form:errors path="username" cssStyle="color:red;"/></td></tr>
 					<tr><td colspan="2"><form:errors path="password" cssStyle="color:red;"/></td></tr>
+					<tr><td colspan="2"> <form:errors path="email" cssStyle="color:red;"/></td></tr>
 				</table>
 				<div style="text-align:center; margin:2px;">
 			        <button type="submit" name="signup" value="signup" class="btn btn-primary">Sign Up</button>

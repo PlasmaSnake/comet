@@ -31,18 +31,19 @@
 	// if it's -1, it is NOT inserted
 	if(acctCreationGeneratedID < 0) {
 		//TODO redirect and throw error
-		message = "Username or E-mail already exists.";
+		message = "Username or E-mail already exists. Log in!";
 	}
 	else {
 		//TODO redirect to success
-		message = "Account successfully signed up!"; 
+		message = "Account successfully signed up!";
+		response.sendRedirect("userHome");
 	}
-	//response.sendRedirect(acctCreationResult);
 %>
 <body>
 	<div>
 		<h3><%=message %></h3>
 		<div style="text-align:center;">
+			<a href = "signup">Sign up</a> <br>
 			<a href = "home">Return to home</a>
 		</div>
 	</div>
