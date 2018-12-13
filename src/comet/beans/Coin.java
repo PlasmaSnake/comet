@@ -1,15 +1,13 @@
 package comet.beans;
 
-import java.util.TreeMap;
-
-import comet.beans.DAO.SQLDataRequestDAO;
+import java.util.ArrayList;
 
 public class Coin {
 	private int coin_id;
 	private String symbol;
 	private String coinName;
 	private double maxSupply;
-	private TreeMap<Long, HistData> dataPoints;
+	private ArrayList<HistData> dataPoints;
 	
 	public Coin(){
 	}
@@ -45,19 +43,12 @@ public class Coin {
 	public void setMaxSupply(double maxSupply) {
 		this.maxSupply = maxSupply;
 	}
-	public TreeMap<Long, HistData> getDataPoints() {
+	public ArrayList<HistData> getDataPoints() {
 		return dataPoints;
-	}
-	public void insertDataPointsFromDB() {
-		try {
-			SQLDataRequestDAO sqlDataRequestDAO = new SQLDataRequestDAO();
-			//TODO Insert datapoints from historical db
-		} catch (Exception e) { e.printStackTrace();}
-		
 	}
 	
 	public void insertDataPoint(HistData point) {
-		dataPoints.put(point.getTimestamp(), point);
+		dataPoints.add(point);
 	}
 	
 	

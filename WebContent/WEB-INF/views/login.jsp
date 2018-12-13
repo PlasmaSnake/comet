@@ -1,45 +1,48 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="comet.beans.User"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Comet Coin App</title>
-</head>
-<%
-	// if user stuff doesn't == user stuff
-if(request.getParameter("login")!=null){
-	User user = new User();
-	user.setUsername(request.getParameter("userName"));
-	user.setPassword(request.getParameter("password"));
-	if ("test".equals(user.getUsername()) && "password".equals(user.getPassword())){
-		RequestDispatcher dispatcher = request.getRequestDispatcher("success.jsp");
-		request.setAttribute("user", user);
-		dispatcher.forward(request, response);
-	} else { System.out.println("Username and Password does not match.");}
-}
-%>
-<body>
-	<h1>Sign in!</h1>
-	<form method="post">
-		<table>
-			<tr>
-				<td>UserName :</td>
-				<td><input type="text" name="userName" /></td>
-			</tr>
-			<tr>
-				<td>Password :</td>
-				<td><input type="password" name="password" /></td>
-			</tr>
-			<tr>
-				<td colspan="2"><input type="submit" name="login" value="Login" />
-				</td>
-			</tr>
-		</table>
-	</form>
-	<!-- TODO: make a successful/failure page  -->
-	New User?
-	<a href="signup">Sign up</a>
-</body>
-</html>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginDialog">
+  Login
+</button>
+<!-- Modal -->
+<div class="modal fade" id="loginDialog" tabindex="-1" role="dialog" aria-labelledby="loginLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginLabel">Sign in!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+		<form:form action="login_process" method="post" modelAttribute="userModel">
+			<div class="modal-body">
+				<table>
+					<tr><td colspan="2"><form:errors path="username" cssStyle="color:red;"/></td></tr>
+					<tr>
+						<td>User Name: </td>
+						<td><form:input type="text" id = "username" name="username" path="username" placeholder="apple1234"/></td>
+					</tr>
+					<tr><td colspan="2"><form:errors path="password" cssStyle="color:red;"/></td></tr>
+					<tr>
+						<td>Password: </td>
+						<td><input type="password" name="password" placeholder="6261abcd"/></td>
+					</tr>
+				</table>
+			</div>
+		    <div class="modal-footer">
+		    	<div class="container col-md-12">
+		    		<div class="row">
+						<div class = "col-md-6">New User?&nbsp;<a href="signup">Sign up!</a> </div>
+					    <div class = "col-md-6" style="justify-items:end;">
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					        <button type="submit" name="login" value="Login" class="btn btn-primary">Login</button>
+				        </div>
+			        </div>
+		        </div>
+	   	 	</div>
+		</form:form>
+    </div>
+  </div>
+</div>

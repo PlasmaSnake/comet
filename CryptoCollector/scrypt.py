@@ -103,7 +103,6 @@ def cryptocompareCoinToUSDRequest(coin):
 
 def cryptocompareAllCoinRequest():
 	url = urlopen('https://min-api.cryptocompare.com/data/all/coinlist')
-	# change to get basic info
 	resp = json.loads(url.read().decode('utf-8'))
 	dirPath = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
 	filePath = os.path.join(dirPath, 'AllCoins.json')
@@ -117,7 +116,7 @@ def cryptocompareAllCoinRequest():
 		json.dump(resp, outfile)
 
 cryptocompareAllCoinRequest()
-# coin = 'BTC'
+# coin = 'ETH'
 # cryptocompareCoinToUSDRequest(coin)
 # cryptocompareRequest(coin)
 # while not endOfRequest(coin):
