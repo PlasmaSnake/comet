@@ -6,7 +6,8 @@
 <%
 	ArrayList<Coin> coinList = new ArrayList<Coin>();
 	SQLDataRequestDAO sqlDataRequestDAO = new SQLDataRequestDAO();
-	TreeMap<String, HistData> latestData = sqlDataRequestDAO.getAllCoinsLatestHistoricalData();
+	//TODO Set up user coins registration, and deletion.
+	//TreeMap<String, HistData> latestData = sqlDataRequestDAO.getAllCoinsLatestHistoricalData();
 	for (Entry<String, HistData> e: latestData.entrySet()) {
 		Coin coin = sqlDataRequestDAO.getBasicInfo(e.getKey());
 		coinList.add(coin);

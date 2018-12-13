@@ -19,12 +19,19 @@ import comet.beans.User;
 @SessionAttributes("userModel")
 public class HomeController {
 	
+	// HOME ROUTES
 	@RequestMapping("")
 	public ModelAndView homepage() {
 		ModelAndView mav = new ModelAndView("index");
 		return mav;
 	}
+	
+	@RequestMapping("/home")
+	public ModelAndView backIndex() {
+		return new ModelAndView("index");
+	}
 
+	// USER LOGIN AND LOGOUT ROUTES
 	@RequestMapping(value = "/login_process", method=RequestMethod.POST)
 	public ModelAndView processLoginFromModal(@ModelAttribute("userModel") @Valid User u, BindingResult errors) {
 		if(errors.hasErrors()) {
@@ -51,12 +58,6 @@ public class HomeController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/login_success", method=RequestMethod.GET)
-	public ModelAndView successfulLogin(@ModelAttribute("userModel") @Valid User u) {
-		ModelAndView mav = new ModelAndView("loginSuccess");
-		return mav;
-	}
-	
 	@RequestMapping("/signup")
 	public ModelAndView signup() {
 		ModelAndView mav = new ModelAndView("signup");
@@ -79,17 +80,26 @@ public class HomeController {
 		return mav;
 	}
 	
-	@RequestMapping("/home")
-	public ModelAndView backIndex() {
-		return new ModelAndView("index");
-	}
-	
 	@RequestMapping("/logout")
 	public ModelAndView logout(HttpServletRequest request) {
 		HttpSession httpSession = request.getSession();
 	    httpSession.invalidate();
 		return new ModelAndView("redirect:/");
 	}
+	
+	@RequestMapping("/contact")
+	public ModelAndView contact() {
+		return new ModelAndView("contact");
+	}
+	
+	// COIN ROUTES
+	@RequestMapping(value = "/coin/", method=RequestMethod.GET)
+	public ModelAndView getCoinInfo(@ModelAttribute("queriedCoin") String coinName) {
+		ModelAndView mav = new ModelAndView("coin-info");
+		mav.addObject("queriedCoin", coinName);
+		return mav;
+	}
+	
 	
 	@ModelAttribute("userModel")
 	public User userCreation(String username, String password, String email, String fullName, String country) {

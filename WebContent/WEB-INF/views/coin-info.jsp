@@ -8,23 +8,28 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title><%=session.getAttribute("coin") %></title>
+<title><%=session.getAttribute("queriedCoin") %></title>
+<link href="<c:url value="/resources/stylesheets/css/style.css"/>" type="text/css" rel="stylesheet" />
 <!-- Bootstrap -->
 <link href="<c:url value="/resources/bootstrap/4.1.3/css/bootstrap.min.css"/>" rel="stylesheet" />
 </head>
 <header> 
 <%@include file="navbar.jsp" %>
 </header>
+<%
+// take model information and populate fields
+
+%>
 <body>
 
 	
 	<table>
-	<tr>
-		<td> coin info goes here:</td> <td> graph info goes here</td>
-	</tr>
-	<tr>
-		<td> coin info goes here:</td> <td> graph info goes here</td>
-	</tr>
+		<tr>
+			<td> coin info goes here:</td> <td> graph info goes here</td>
+		</tr>
+		<tr>
+			<td> coin info goes here:</td> <td> graph info goes here</td>
+		</tr>
 	</table>
 	
 	<script src="<c:url value="/resources/bootstrap/jquery.min.js"/>"></script>

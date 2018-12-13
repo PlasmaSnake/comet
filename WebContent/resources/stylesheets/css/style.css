@@ -20,3 +20,9 @@ div {
 	margin: 5px 0px 20% 0px; 
 	text-align: center;
 }
+
+.content-area > ul {
+	list-style: none;
+    text-align: parent;
+    list-style-position: inside;
+}
