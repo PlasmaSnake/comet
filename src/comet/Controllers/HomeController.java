@@ -19,8 +19,6 @@ import comet.beans.DAO.SQLDataRequestDAO;
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes("userModel")
-@Scope("session")
 public class HomeController {
 	
 	// HOME ROUTES
@@ -37,7 +35,7 @@ public class HomeController {
 
 	// USER LOGIN AND LOGOUT ROUTES
 	@RequestMapping(value = "/login_process", method=RequestMethod.POST)
-	public ModelAndView processLoginFromModal(@ModelAttribute("userModel") @Valid User u, BindingResult errors, RedirectAttributes redirectAttributes) {
+	public ModelAndView processLoginFromModal(@ModelAttribute("userModel") @Valid User u, BindingResult errors, HttpSession session) {
 		ModelAndView mav = new ModelAndView("loginProcess");
 		SQLDataRequestDAO dao = new SQLDataRequestDAO();
 		if(errors.hasErrors()) {
@@ -47,7 +45,8 @@ public class HomeController {
 		if (dao.validateUser(u.getUsername(), u.getPassword())) {
 			mav = new ModelAndView("redirect:/u/");
 			User loggedIn = dao.requestUserInfo(u.getUsername());
-			redirectAttributes.addFlashAttribute("userLoggedIn", loggedIn);
+			session.setAttribute("userLoggedIn", loggedIn);
+//			redirectAttributes.addFlashAttribute("userLoggedIn", loggedIn);
 		}
 		else {
 			mav.addObject("login_error", "Username or password incorrect.");

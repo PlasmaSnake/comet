@@ -18,8 +18,6 @@ import comet.beans.User;
 
 @Controller
 @RequestMapping("/u/")
-@SessionAttributes("userLoggedIn, queriedCoin")
-@Scope("session")
 public class UserController {
 	
 	//TODO Fix session attributes and try to get it running
@@ -27,19 +25,20 @@ public class UserController {
 	@RequestMapping(value = "")
 	public ModelAndView homepage(HttpServletRequest request, HttpSession session) {
 		ModelAndView mav = new ModelAndView("/UserViews/index-user");
-//		session.setAttribute("userLoggedIn", request.getAttribute("userLoggedIn"));
+		mav.addObject("user_name",((User) session.getAttribute("userLoggedIn")).getUsername());
 		return mav;
 	}
 	
 	@RequestMapping("/home")
 	public ModelAndView backIndex() {
-		return new ModelAndView("/UserViews/index-user");
+		ModelAndView mav = new ModelAndView("redirect:/u/");
+		return mav;
 	}
 	
 	// COIN LIST ROUTES
 	//TODO Figure out get and send data to coin info
 	@RequestMapping(value = "/coin/", method=RequestMethod.GET)
-	public ModelAndView getCoinInfo(@ModelAttribute("queriedCoin") String coinName) {
+	public ModelAndView getCoinInfo(@ModelAttribute("queriedCoin") String coinName, HttpSession session) {
 		ModelAndView mav = new ModelAndView("/UserViews/coin-info-user");
 		mav.addObject("queriedCoin", coinName);
 		return mav;

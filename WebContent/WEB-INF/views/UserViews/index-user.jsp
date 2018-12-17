@@ -21,7 +21,7 @@
 		<br />
 		<div class="alert alert-success">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-			Welcome, ${userLoggedIn.getUsername()}!
+			Welcome, ${user_name}!
 		</div>
 	</div>	
 	<%@include file ="../coin-list.jsp" %>
