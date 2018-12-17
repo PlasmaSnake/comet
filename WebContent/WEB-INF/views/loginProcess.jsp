@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page language="java" session="true" %>
 <%@ page import="comet.beans.DAO.SQLDataRequestDAO, comet.beans.User" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
@@ -14,15 +15,6 @@
 <link href="<c:url value="/resources/bootstrap/4.1.3/css/bootstrap.min.css"/>" rel="stylesheet" />
 <title>Comet Coin Tracker</title>
 </head>
-<%
-	SQLDataRequestDAO dao = new SQLDataRequestDAO();
-	User user = (User) request.getAttribute("userModel");
-	boolean test = dao.validateUser(user.getUsername(), user.getPassword());
-	if (test) {
-		request.getSession().setAttribute("userLoggedIn", dao.requestUserInfo(user.getUsername()));
-		response.sendRedirect("u/");
-	}
-%>
 <header> 
 	<%@include file="navbar.jsp" %>
 </header>

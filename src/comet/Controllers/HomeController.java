@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,12 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import comet.beans.User;
+import comet.beans.DAO.SQLDataRequestDAO;
 
 @Controller
 @RequestMapping("/")
 @SessionAttributes("userModel")
+@Scope("session")
 public class HomeController {
 	
 	// HOME ROUTES
@@ -33,28 +37,40 @@ public class HomeController {
 
 	// USER LOGIN AND LOGOUT ROUTES
 	@RequestMapping(value = "/login_process", method=RequestMethod.POST)
-	public ModelAndView processLoginFromModal(@ModelAttribute("userModel") @Valid User u, BindingResult errors) {
+	public ModelAndView processLoginFromModal(@ModelAttribute("userModel") @Valid User u, BindingResult errors, RedirectAttributes redirectAttributes) {
+		ModelAndView mav = new ModelAndView("loginProcess");
+		SQLDataRequestDAO dao = new SQLDataRequestDAO();
 		if(errors.hasErrors()) {
-			ModelAndView mav = new ModelAndView("signup");
 			mav.addObject("login_error", "Sign up or retry login.");
 			return mav;
 		}
-		ModelAndView mav = new ModelAndView("loginProcess");
-		mav.addObject("login_error", "Username or password incorrect.");
-		mav.addObject("userLoggedIn", u);
+		if (dao.validateUser(u.getUsername(), u.getPassword())) {
+			mav = new ModelAndView("redirect:/u/");
+			User loggedIn = dao.requestUserInfo(u.getUsername());
+			redirectAttributes.addFlashAttribute("userLoggedIn", loggedIn);
+		}
+		else {
+			mav.addObject("login_error", "Username or password incorrect.");
+		}
 		return mav;
 	}
 	
 	@RequestMapping(value = "/login_page_process", method=RequestMethod.POST)
-	public ModelAndView processLoginFromPage(@ModelAttribute("userModel") @Valid User u, BindingResult errors) {
+	public ModelAndView processLoginFromPage(@ModelAttribute("userModel") @Valid User u, BindingResult errors, RedirectAttributes redirectAttributes) {
+		ModelAndView mav = new ModelAndView("loginProcess");
+		SQLDataRequestDAO dao = new SQLDataRequestDAO();
 		if(errors.hasErrors()) {
-			ModelAndView mav = new ModelAndView("loginProcess");
 			mav.addObject("login_error", "Username or password incorrect.");
 			return mav;
 		}
-		ModelAndView mav = new ModelAndView("loginProcess");
-		mav.addObject("login_error", "Username or password incorrect.");
-		mav.addObject("userLoggedIn", u);
+		if (dao.validateUser(u.getUsername(), u.getPassword())) {
+			mav = new ModelAndView("redirect:/u/");
+			User loggedIn = dao.requestUserInfo(u.getUsername());
+			redirectAttributes.addFlashAttribute("userLoggedIn", loggedIn);
+		}
+		else {
+			mav.addObject("login_error", "Username or password incorrect.");
+		}
 		return mav;
 	}
 	

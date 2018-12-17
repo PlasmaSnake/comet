@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@page import="comet.beans.DAO.SQLDataRequestDAO"%>
+<%@page import="comet.beans.DAO.SQLDataRequestDAO, comet.beans.User"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,8 +23,7 @@
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
 			Welcome, ${userLoggedIn.getUsername()}!
 		</div>
-	</div>
-	
+	</div>	
 	<%@include file ="../coin-list.jsp" %>
 	
 	<script src="<c:url value="/resources/bootstrap/jquery.min.js"/>"></script>
