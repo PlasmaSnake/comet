@@ -26,3 +26,7 @@ div {
     text-align: parent;
     list-style-position: inside;
 }
+
+.clickable-row{
+	cursor:pointer;
+}

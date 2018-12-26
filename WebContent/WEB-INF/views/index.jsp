@@ -29,5 +29,6 @@
 	<script src="<c:url value="/resources/popper/popper.min.js"/>"></script>
 	<script src="<c:url value="/resources/bootstrap/4.1.3/js/bootstrap.min.js"/>"></script>
 </body>
+<script src="/comet/resources/jquery/clickable-row.js"></script>
 <%@include file="footer.jsp" %>
 </html>

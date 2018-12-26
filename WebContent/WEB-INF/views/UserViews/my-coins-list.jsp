@@ -35,7 +35,7 @@
 		      <td>$<%=String.format("%,.2f",latestData.get(symbol).getHigh()) %></td>
 		      <td>$<%=String.format("%,.2f",latestData.get(symbol).getLow()) %></td>
 		      <td><%=String.format("%,.2f",c.getMaxSupply())%></td>
-		      <td>Last updated on <%=new SimpleDateFormat("yyyy-MM-dd").format(new Date(latestData.get(symbol).getTimestamp()*1000))%></td>
+		      <td>Last updated on <%=latestData.get(symbol).timestampToDate()%></td>
 		      <td>Remove coin</td> <%-- TODO --%>
 		    </tr>
 	    <%} // end of coin list table %>

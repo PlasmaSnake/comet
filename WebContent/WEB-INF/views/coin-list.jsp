@@ -12,7 +12,7 @@
 		coinList.add(coin);
 	}
 %>
-	<table class="table table-striped">
+	<table class="table table-striped table-hover">
 	  <thead>
 	    <tr>
 	      <th scope="col">Coin Symbol</th>
@@ -27,14 +27,14 @@
 		<% for(Coin c: coinList){
 			String symbol = c.getSymbol();
 		%>
-		    <tr class='clickable-row' data-href='/comet/coininfo?coin=${symbol}'>
+		    <tr class='clickable-row' data-href='/comet/coininfo?coin=<%=symbol%>'>
 		    <%--TODO: ADD a link to specific coin page --%>
 		      <th scope="row"><% out.print(symbol); %></th>
 		      <td><%=c.getCoinName()%></td>
 		      <td>$<%=String.format("%,.2f",latestData.get(symbol).getHigh()) %></td>
 		      <td>$<%=String.format("%,.2f",latestData.get(symbol).getLow()) %></td>
 		      <td><%=String.format("%,.2f",c.getMaxSupply())%></td>
-		      <td>Last updated on <%=new SimpleDateFormat("yyyy-MM-dd").format(new Date(latestData.get(symbol).getTimestamp()*1000))%></td>
+		      <td>Last updated on <%=latestData.get(symbol).timestampToDate()%></td>
 		    </tr>
 	    <%} // end of coin list table %>
 	  </tbody>

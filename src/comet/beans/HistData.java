@@ -1,5 +1,8 @@
 package comet.beans;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class HistData {
 	private long timestamp;
 	private double low;
@@ -21,6 +24,10 @@ public class HistData {
 		this.close = close;
 		this.volumeTo = volumeTo;
 		this.volumeFrom = volumeFrom;
+	}
+	
+	public String timestampToDate() {
+		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(getTimestamp()*1000));
 	}
 
 	public long getTimestamp() {
