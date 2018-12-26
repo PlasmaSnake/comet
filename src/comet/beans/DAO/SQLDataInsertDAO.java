@@ -70,6 +70,54 @@ public class SQLDataInsertDAO extends ConnectionAbstractDAO implements SQLDataIn
 	}
 
 	@Override
+	public boolean updateAccountPassword(String username, String newPassword) {
+		try {
+			this.connect();
+			ps = conn.prepareStatement(SQL.UPDATE_USER_PASSWORD.getQuery());
+			ps.setString(1, newPassword);
+			ps.setString(2, username);
+			if(0!=ps.executeUpdate()) return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			this.dispose();
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean updateAccountCountry(String username, String newCountry) {
+		try {
+			this.connect();
+			ps = conn.prepareStatement(SQL.UPDATE_USER_COUNTRY.getQuery());
+			ps.setString(1, newCountry);
+			ps.setString(2, username);
+			if(0!=ps.executeUpdate()) return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			this.dispose();
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean updateAccountFullName(String username, String newName) {
+		try {
+			this.connect();
+			ps = conn.prepareStatement(SQL.UPDATE_USER_FULLNAME.getQuery());
+			ps.setString(1, newName);
+			ps.setString(2, username);
+			if(0!=ps.executeUpdate()) return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			this.dispose();
+		}
+		return false;
+	}
+	
+	@Override
 	public JSONObject connectToHistoricalFile(int fileNumber, String coin) throws Exception {
 		JSONParser parser = new JSONParser();
 		Object obj = parser.parse(new FileReader("C:\\Users\\Students\\SourceControl\\comet\\CryptoCollector\\data\\"

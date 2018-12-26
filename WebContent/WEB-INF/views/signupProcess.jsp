@@ -30,13 +30,11 @@
 			country);
 	// if it's -1, it is NOT inserted
 	if(acctCreationGeneratedID < 0) {
-		//TODO redirect and throw error
 		message = "Username or E-mail already exists. Log in!";
 	}
 	else {
-		//TODO redirect to success
+		// redirect to home
 		message = "Account successfully signed up!";
-		response.sendRedirect("userHome");
 	}
 %>
 <body>

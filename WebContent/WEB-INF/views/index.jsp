@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@page import="comet.beans.DAO.SQLDataRequestDAO"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,14 +15,15 @@
 <%@include file="navbar.jsp" %>
 </header>
 <body>
-	<div class="container">
-		<br />
-		<div class="alert alert-success">
-			<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-			<strong>Note: </strong> A Max Supply of 0 means infinite supply.
+		<div class="container">
+			<br />
+			<div class="alert alert-success">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+				<strong>Note: </strong> A Max Supply of 0 means infinite supply.
+			</div>
 		</div>
-	</div>
-	<%@include file ="coin-list.jsp" %>
+		
+	<%@include file="coin-list.jsp" %>
 	
 	<script src="<c:url value="/resources/bootstrap/jquery.min.js"/>"></script>
 	<script src="<c:url value="/resources/popper/popper.min.js"/>"></script>

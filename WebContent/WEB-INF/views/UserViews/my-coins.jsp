@@ -21,7 +21,7 @@
 		<br />
 		<div class="alert alert-success">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-			Here is you personalized coin list!
+			Here is your personalized coin list!
 		</div>
 	</div>
 	

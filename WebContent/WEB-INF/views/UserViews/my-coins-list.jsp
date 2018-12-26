@@ -4,7 +4,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="comet.beans.*, java.util.TreeMap, java.util.Map.Entry, java.util.Date, java.util.ArrayList" %>
 <%
-	//TODO 
+	//TODO Get user coins and then retrieve their historical data. Then get basic info for each of those coins.
 	ArrayList<Coin> coinList = new ArrayList<Coin>();
 	SQLDataRequestDAO sqlDataRequestDAO = new SQLDataRequestDAO();
 	TreeMap<String, HistData> latestData = sqlDataRequestDAO.getAllCoinsLatestHistoricalData();

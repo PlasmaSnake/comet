@@ -48,6 +48,37 @@ public class User {
 		this(username, password, email, fullName, country);
 		this.setAdminRole(adminRole);
 	}
+	
+	// VALIDATED CHANGES
+	public boolean changePassword(String oldPassword, String newPassword) {
+		if (validatePassword(oldPassword)) {
+			this.password = newPassword;
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean changeCountry(String oldPassword, String newCountry) {
+		if (validatePassword(oldPassword)) {
+			this.country = newCountry;
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean changeName(String oldPassword, String newName) {
+		if (validatePassword(oldPassword)) {
+			this.country = newName;
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean validatePassword(String password) {
+		return (this.password.equals(password));
+	}
+	
+	// GETTERS AND SETTERS
 	public String getEmail() {
 		return email;
 	}

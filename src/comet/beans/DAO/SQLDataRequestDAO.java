@@ -54,6 +54,30 @@ public class SQLDataRequestDAO extends ConnectionAbstractDAO implements SQLDataR
 		finally {this.dispose(); }
 		return user;
 	}
+	
+	@Override
+	public ArrayList<User> getAllUsers() {
+		ArrayList<User> userList = null;
+		try {
+			this.connect();
+			ps = conn.prepareStatement(SQL.REQUEST_ACCOUNTS.getQuery());
+			rs = ps.executeQuery();
+			// if username is found in the database, check the password of that data
+			userList = new ArrayList<User>();
+			while(rs.next()) {
+				User user = new User(
+						rs.getString(2),//username
+						rs.getString(3),//password
+						rs.getString(4),//email
+						rs.getString(5),//fullName
+						rs.getString(6),//country
+						rs.getInt(7));//admin role
+				userList.add(user);
+			}
+		} catch (SQLException e) { e.printStackTrace();}
+		finally {this.dispose(); }
+		return userList;
+	}
 
 	@Override
 	public boolean getAllCoinInfo(String coinSymbol) {
@@ -113,8 +137,8 @@ public class SQLDataRequestDAO extends ConnectionAbstractDAO implements SQLDataR
 			while(rs.next()) {
 				HistData info = new HistData(
 						rs.getLong(2), //timestamp, 
-						rs.getDouble(5), //low, 
 						rs.getDouble(6), //high, 
+						rs.getDouble(5), //low, 
 						rs.getDouble(3), //open, 
 						rs.getDouble(4), //close, 
 						rs.getDouble(7), //volumeTo, 

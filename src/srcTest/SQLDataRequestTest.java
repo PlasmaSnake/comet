@@ -2,6 +2,8 @@ package srcTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -41,6 +43,12 @@ class SQLDataRequestTest{
 		User test = sqlDataRequestDAO.requestUserInfo("admin");
 		assertNotNull(test);
 	}
+	
+	@Test
+	void testGetAllUsers() {
+		ArrayList<User> userList = sqlDataRequestDAO.getAllUsers();
+		assertNotNull(userList);
+	}
 
 	@Test
 	void testGetAllCoinInfo() {
@@ -61,5 +69,5 @@ class SQLDataRequestTest{
 	void testGetAllCoinsLatestHistoricalData() {
 		fail("Not yet implemented");
 	}
-
+	
 }

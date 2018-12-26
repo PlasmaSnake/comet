@@ -22,8 +22,13 @@ public interface SQLDataInsertDAOI {
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"),
 		ASSIGN_USER_COINS("INSERT INTO usercoins VALUES (?,?)"),
 		
+		// TABLE DATA MODIFICATION (User/UserCoins)
+		UPDATE_USER_PASSWORD("UPDATE accounts SET pass=? where username=?"),
+		UPDATE_USER_FULLNAME("UPDATE accounts SET full_name=? where username=?"),
+		UPDATE_USER_COUNTRY("UPDATE accounts SET country=? where username=?"),
 		// USED TO VERIFY COIN FOR ASSIGNING USER COINS
 		LOOK_FOR_COIN("SELECT coin_id FROM coinbasicinfo where symbol = ?");
+		
 		
 		private String query;
 		private SQL(String s) {
@@ -52,6 +57,28 @@ public interface SQLDataInsertDAOI {
 	 */
 	int createAccount(String username, String password, String email, String fullName, String country);
 	
+	/**
+	 * @param username
+	 * @param newPassword
+	 * @return true if username is found and newPassword is set, false if username not found
+	 */
+	boolean updateAccountPassword(String username, String newPassword);
+	
+	/**
+	 * @param username
+	 * @param newName
+	 * @return true if username is found and newName is set, false if username not found
+	 */
+	boolean updateAccountFullName(String username, String newName);
+	
+	/**
+	 * @param username
+	 * @param country
+	 * @return true if username is found and newCountry is set, false if username not found
+	 */
+	boolean updateAccountCountry(String username, String newCountry);
+	
+	///////////////////////////////////////////JSON RESPONSE TEST DATA INSERTION///////////////////////////////////////////////
 	/** Connects to a particular JSON response file. Helper method for parseHistoricalCoinData.
 	 * @return false if unable to connect to a file, true if connects to a file.
 	 */
@@ -102,6 +129,7 @@ public interface SQLDataInsertDAOI {
 	 * @throws SQLException
 	 */
 	boolean insertCoinHistoricalData(int coinID, long timestamp, double open, double close, double high, double low, double volumeTo, double volumeFrom) throws SQLException;
+	
 	
 	/** Links a user to a coin by inserting a values into UserCoins
 	 * @return false if unable to insert data, true if data is inserted.

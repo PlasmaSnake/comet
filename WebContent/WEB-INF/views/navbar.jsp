@@ -1,4 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="comet.beans.User" %>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <h1 class="text-hide" style="background-image: url('images/icon_placeholder.svg'); width: 32px; height: 32px;margin-top: 6px;margin-right:10px;">Comet</h1>

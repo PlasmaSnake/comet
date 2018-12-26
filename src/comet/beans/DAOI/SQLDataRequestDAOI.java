@@ -3,6 +3,7 @@ package comet.beans.DAOI;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+import antlr.collections.List;
 import comet.beans.Coin;
 import comet.beans.HistData;
 import comet.beans.User;
@@ -13,6 +14,7 @@ public interface SQLDataRequestDAOI {
 		// TABLE DATA REQUESTS
 		REQUEST_ACCOUNT_PW("SELECT pass FROM accounts WHERE username = ?"),
 		REQUEST_ACCOUNT_DATA("SELECT * FROM accounts WHERE username = ?"),
+		REQUEST_ACCOUNTS("SELECT * FROM accounts"),
 		REQUEST_COIN_BASIC_DATA("SELECT * FROM coinbasicinfo "
 				+ "WHERE ? = SYMBOL"),
 		REQUEST_COIN_HISTORICAL_DATA_FROM_X_TO_Y("SELECT * FROM coinhistoricalinfo " 
@@ -58,7 +60,12 @@ public interface SQLDataRequestDAOI {
 	 * @param coinSymbol
 	 * @return true if basic info and historical data functions work. false if one fails
 	 */
-	// function for list of users?
+	
+	/** Retrieves all Users from accounts database table.
+	 * @return userList
+	 */
+	public ArrayList<User> getAllUsers();
+	
 	public boolean getAllCoinInfo(String coinSymbol);
 	
 	/**

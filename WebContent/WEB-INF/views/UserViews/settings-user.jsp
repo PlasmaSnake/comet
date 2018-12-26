@@ -18,40 +18,39 @@
 <%@include file="navbar-user.jsp" %>
 </header>
 <body>
-		<div class="content-area">
-		<form:form action="modify_user_process" method="post" modelAttribute="loggedInUser">
-				<table style="margin: 0px auto;">
-					<tr><td>Modify your account:</td></tr>
-					<tr>
-						<td>Old password: </td>
-						<td><form:input type="password" path="oldpassword" name="oldpassword" placeholder="6261abcd"/></td>
-					</tr>
-					<tr>
-						<td>New Password: </td>
-						<td><form:input type="password" path="password" name="password" placeholder="abcd6261"/></td>
-					</tr>
-					<tr>
-						<td>Change Primary E-mail: </td>
-						<td><form:input type="text" path="email" name="email" placeholder="a1@domain.com"/></td>
-					</tr>
-					<tr>
-						<td>Name: </td>
-						<td><input type="text" name="fullName" placeholder="optional"/></td>
-					</tr>
-					<tr>
-						<td>Country: </td>
-						<td><input type="text" name="country" placeholder="optional"/></td>
-					</tr>
-					<tr><td colspan="2"><form:errors path="oldpassword" cssStyle="color:red;"/></td></tr>
-					<tr><td colspan="2"><form:errors path="password" cssStyle="color:red;"/></td></tr>
-					<tr><td colspan="2"><form:errors path="email" cssStyle="color:red;"/></td></tr>
-					<tr><td colspan="2">${input_error}${pass_changed}</td></tr>
-				</table>
-				<div style="text-align:center; margin:2px;">
-			        <button type="submit" name="signup" value="signup" class="btn btn-primary">Sign Up</button>
-				</div>
-		</form:form>
-	</div>
+		<div class="card" style="width: 24rem;margin:auto;">
+		  <div class="card-body">
+		  	<form action = "updatename" method="post">
+			    <p class="card-text">Full Name: ${userLoggedIn.getFullName()}</p>
+			    <input type="text" name="fullName" placeholder="John Doe"/>
+			    <button type="submit" name="changeName" value="changeName" class="btn btn-primary">Change Name</button>
+			</form>
+		  </div>
+		</div>
+		
+		<div class="card" style="width: 24rem;margin:auto;">
+		  <div class="card-body">
+			<p class="card-text">Change password here</p>
+			<div class ="error-msg">${password_error }</div>
+		  		<form:form action = "updatepassword" method="post" modelAttribute="passwordval">
+				    <p class="card-text"><form:errors path="password" cssStyle="color:red;"/></p>
+				   	<form:input type="password" path="password" name="password" placeholder="Enter old password"/>
+				   	<p class="card-text"><form:errors path="newPassword" cssStyle="color:red;"/></p>
+				    <form:input type="password" path="newPassword" name="newPassword" placeholder="abcdef123456"/>
+				    <br>
+				    <button type="submit" name="changePass" value="changePass" class="btn btn-primary">Change Password</button>
+				</form:form>
+		  </div>
+		</div>
+				<div class="card" style="width: 24rem;margin:auto;">
+		  <div class="card-body">
+		  	<form action = "updatecountry" method="post">
+			    <p class="card-text">Country: ${userLoggedIn.getCountry()}</p>
+			    <input type="text" name="country" placeholder="United States"/>
+			    <button type="submit" name="changeCountry" value="changeCountry" class="btn btn-primary">Change Country</button>
+			</form>
+		  </div>
+		</div>
 	
 	<script src="<c:url value="/resources/bootstrap/jquery.min.js"/>"></script>
 	<script src="<c:url value="/resources/popper/popper.min.js"/>"></script>
