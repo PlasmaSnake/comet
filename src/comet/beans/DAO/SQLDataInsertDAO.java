@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Iterator;
 
+import org.apache.maven.shared.utils.Os;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -246,7 +247,6 @@ public class SQLDataInsertDAO extends ConnectionAbstractDAO implements SQLDataIn
 		return false;
 	}
 
-	// TODO test - need to refactor - preparing statements.
 	@Override
 	public boolean insertCoinHistoricalData(int coinID, long timestamp, double open, double close, double high,
 			double low, double volumeTo, double volumeFrom) throws SQLException {
@@ -271,17 +271,16 @@ public class SQLDataInsertDAO extends ConnectionAbstractDAO implements SQLDataIn
 		return false;
 	}
 
-	// TODO implement
 	@Override
-	public boolean assignUserCoin(String symbol) throws SQLException {
+	public boolean assignUserCoin(int coin_id, int user_id) throws SQLException {
 		try {
 			this.connect();
-			if (getCoinID(symbol) == -1)
-				return false;
-			else {
-
-			}
-			ps = conn.prepareStatement(SQL.INSERT_COIN_BASIC_DATA.getQuery());
+			ps = conn.prepareStatement(SQL.ASSIGN_USER_COINS.getQuery());
+			ps.setInt(1, user_id);
+			ps.setInt(2, coin_id);
+			ps.execute();
+			return true;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

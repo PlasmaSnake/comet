@@ -47,8 +47,8 @@ public class Coin {
 		return dataPoints;
 	}
 	
-	public void insertDataPoint(HistData point) {
-		dataPoints.add(point);
+	public void setDataPoints(ArrayList<HistData> points) {
+		dataPoints = points;
 	}
 	
 	

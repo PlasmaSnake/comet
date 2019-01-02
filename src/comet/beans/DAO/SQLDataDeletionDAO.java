@@ -2,68 +2,71 @@ package comet.beans.DAO;
 
 import java.sql.SQLException;
 
+import comet.beans.User;
 import comet.beans.DAOI.ConnectionAbstractDAO;
 import comet.beans.DAOI.SQLDataDeletionDAOI;
 
 public class SQLDataDeletionDAO extends ConnectionAbstractDAO implements SQLDataDeletionDAOI{
 
 	@Override
-	public void deleteAccount(String username) {
+	public boolean deleteAccount(String username) {
 		try {
 			this.connect();
+			SQLDataRequestDAO sqlDataRequestDAO = new SQLDataRequestDAO();
+			User u = sqlDataRequestDAO.requestUserInfo(username);
+			
+			//delete usercoins
+			ps = conn.prepareStatement(SQL.DELETE_ALL_USER_COIN.getQuery());
+			ps.setInt(1, u.getUser_id());
+			ps.execute();
+			
+			//delete account information
 			ps = conn.prepareStatement(SQL.DELETE_ACCOUNT.getQuery());
 			ps.setString(1, username);
 			ps.execute();
+			return true;
 
 		} catch (SQLException e) { e.printStackTrace();}
 		finally {this.dispose(); }
+		return false;
 	}
 
 	@Override
-	public void deleteCoin(String coinName) {
+	public boolean deleteCoin(String coinName) {
 		try {
 			this.connect();
 			//delete basic coin
 			ps = conn.prepareStatement(SQL.DELETE_COIN_BASIC_DATA.getQuery());
 			ps.setString(1, coinName);
-			ps.execute();
+			ps.addBatch();
 			
 			//delete historical coin data
 			ps = conn.prepareStatement(SQL.DELETE_COIN_HISTORICAL_DATA.getQuery());
 			ps.setString(1, coinName);
-			ps.execute();
+			ps.addBatch();
+			ps.executeBatch();
+			
+			return true;
 
 		} catch (SQLException e) { e.printStackTrace();}
 		finally {this.dispose(); }
+		return false;
 	}
 
 	//TODO Implement and test
 	@Override
-	public void removeUserCoin(String coinName) {
+	public boolean removeUserCoin(int coin_id, int user_id) {
 		try {
 			this.connect();
 			ps = conn.prepareStatement(SQL.DELETE_USER_COIN.getQuery());
-			ps.setString(1, coinName);
+			ps.setInt(1,coin_id);
+			ps.setInt(2, user_id);
 			ps.execute();
+			return true;
 
 		} catch (SQLException e) { e.printStackTrace();}
 		finally {this.dispose(); }
-	}
-	
-	//TODO Implement UserCoin and then test this
-	protected int getUserCoin_CoinID(String coinName, String username) {
-		try {
-			this.connect();
-			ps = conn.prepareStatement(SQL.GET_USERCOIN_COIN_ID.getQuery());
-			ps.setString(1, coinName);
-			ps.setString(2, username);
-			rs = ps.executeQuery();
-			if(rs.next()) {
-				return 1;
-			}
-		} catch (SQLException e) { e.printStackTrace();}
-		finally {this.dispose(); }
-		return -1;
+		return false;
 	}
 	
 }

@@ -9,8 +9,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import comet.beans.Coin;
 import comet.beans.User;
 import comet.beans.DAO.SQLDataRequestDAO;
 
@@ -18,7 +20,7 @@ import comet.beans.DAO.SQLDataRequestDAO;
 @RequestMapping("/")
 public class HomeController {
 	
-	// HOME ROUTES
+	// HOME + GENERAL ROUTES
 	@RequestMapping("")
 	public ModelAndView homepage() {
 		ModelAndView mav = new ModelAndView("index");
@@ -29,6 +31,20 @@ public class HomeController {
 	public ModelAndView backIndex() {
 		return new ModelAndView("index");
 	}
+	
+	
+	@RequestMapping("/logout")
+	public ModelAndView logout(HttpServletRequest request) {
+		HttpSession httpSession = request.getSession();
+	    httpSession.invalidate();
+		return new ModelAndView("redirect:/");
+	}
+	
+	@RequestMapping("/contact")
+	public ModelAndView contact() {
+		return new ModelAndView("contact");
+	}
+	
 
 	// USER LOGIN AND LOGOUT ROUTES
 	@RequestMapping(value = "/login_process", method=RequestMethod.POST)
@@ -90,24 +106,13 @@ public class HomeController {
 		mav.addObject("country", u.getCountry());
 		return mav;
 	}
-	
-	@RequestMapping("/logout")
-	public ModelAndView logout(HttpServletRequest request) {
-		HttpSession httpSession = request.getSession();
-	    httpSession.invalidate();
-		return new ModelAndView("redirect:/");
-	}
-	
-	@RequestMapping("/contact")
-	public ModelAndView contact() {
-		return new ModelAndView("contact");
-	}
-	
 	// COIN ROUTES
-	@RequestMapping(value = "/coin/", method=RequestMethod.GET)
-	public ModelAndView getCoinInfo(@ModelAttribute("queriedCoin") String coinName) {
+	@RequestMapping(value = "/coininfo", method=RequestMethod.GET)
+	public ModelAndView getCoinInfo(@RequestParam("coin") String coinName, HttpSession session) {
 		ModelAndView mav = new ModelAndView("coin-info");
-		mav.addObject("queriedCoin", coinName);
+		SQLDataRequestDAO sqlDataRequestDAO = new SQLDataRequestDAO();
+		Coin coin = sqlDataRequestDAO.getBasicInfo(coinName);
+		mav.addObject("coinBasicInfo", coin);
 		return mav;
 	}
 	

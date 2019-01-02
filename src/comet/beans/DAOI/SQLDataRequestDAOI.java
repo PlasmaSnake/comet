@@ -1,9 +1,8 @@
 package comet.beans.DAOI;
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.TreeMap;
-
-import antlr.collections.List;
 import comet.beans.Coin;
 import comet.beans.HistData;
 import comet.beans.User;
@@ -17,9 +16,10 @@ public interface SQLDataRequestDAOI {
 		REQUEST_ACCOUNTS("SELECT * FROM accounts"),
 		REQUEST_COIN_BASIC_DATA("SELECT * FROM coinbasicinfo "
 				+ "WHERE ? = SYMBOL"),
-		REQUEST_COIN_HISTORICAL_DATA_FROM_X_TO_Y("SELECT * FROM coinhistoricalinfo " 
-				+ "WHERE ? = SYMBOL AND "
-				+ "COIN_TIMESTAMP BETWEEN ? AND ?"),
+		REQUEST_COIN_BASIC_DATA_BY_ID("SELECT * FROM coinbasicinfo "
+				+ "WHERE ? = coin_id"),
+		REQUEST_COIN_ALL_HISTORICAL_DATA("SELECT * FROM "
+				+ "(SELECT DISTINCT * FROM coinhistoricalinfo WHERE coin_id = ? ORDER BY coin_timestamp DESC) coinTable"),
 		REQUEST_ALL_COIN_LATEST_HISTORICAL_DATA("SELECT distinct chi.*, coinbasicinfo.SYMBOL " + 
 				"FROM COINHISTORICALINFO chi " + 
 				"INNER JOIN " + 
@@ -29,7 +29,11 @@ public interface SQLDataRequestDAOI {
 				"ON chi.COIN_ID = groupedhist.coin_id " + 
 				"AND chi.COIN_TIMESTAMP = groupedhist.MaxDateTime " + 
 				"INNER JOIN coinbasicinfo ON chi.COIN_ID = coinbasicinfo.coin_id"),
-		REQUEST_USER_COINS("SELECT * FROM usercoins JOIN accounts ON usercoins.userID = accounts.userID"), //TODO figure out joins
+		//TODO test query
+		REQUEST_COIN_LATEST_HISTORICAL_DATA("SELECT * FROM "
+				+ "(SELECT DISTINCT * FROM coinhistoricalinfo WHERE coin_id = ? ORDER BY coin_timestamp DESC) coinTable "
+				+ "WHERE ROWNUM = 1"),
+		REQUEST_USER_COINS("SELECT distinct coin_id FROM usercoins WHERE user_id = ?"),
 		
 		// USED TO VERIFY COIN FOR USER COINS
 		LOOK_FOR_COIN("SELECT coin_id FROM coinbasicinfo where symbol = ?");
@@ -56,30 +60,30 @@ public interface SQLDataRequestDAOI {
 	 */
 	public User requestUserInfo(String username);
 	
-	/** Retrieves all information about a specific coin
-	 * @param coinSymbol
-	 * @return true if basic info and historical data functions work. false if one fails
-	 */
-	
 	/** Retrieves all Users from accounts database table.
 	 * @return userList
 	 */
 	public ArrayList<User> getAllUsers();
+
 	
-	public boolean getAllCoinInfo(String coinSymbol);
-	
-	/**
+	/** Used to get the basic information of a coin by its symbol
 	 * @param coinSymbol
-	 * @return Coins coin
-	 * Used to get the basic information of a coin.
+	 * @return Coin coin
+	 * 
 	 */
 	public Coin getBasicInfo(String coinSymbol);
 	
-	/** Retrieves historical data from time range values X to Y for graphing
-	 * @param coinSymbol
-	 * @return ArrayList<HistData> all data within the queried time range
+	/** Used to get the basic information of a coin by its id
+	 * @param coin_id
+	 * @return Coin coin
 	 */
-	public ArrayList<HistData> getHistoricalDataFromXToY(String coinSymbol, long timeFrom, long timeTo);
+	public Coin getBasicInfoById(int coin_id);
+	
+	/** Retrieves all historical data of a coin
+	 * @param coinSymbol
+	 * @return ArrayList<HistData> data
+	 */
+	public ArrayList<HistData> getAllHistoricalData(int coin_id);
 	
 	/** Retrieves first row of historical data of all coins for the coinlist/mycoinlist page
 	 * @param coinSymbol
@@ -87,10 +91,17 @@ public interface SQLDataRequestDAOI {
 	 */
 	public TreeMap<String, HistData> getAllCoinsLatestHistoricalData();
 	
+	/** Retrieves first instance of historical data for a specific coin
+	 * @param coinId
+	 * @return TreeMap<String, HistData> data
+	 */
+	 ArrayList<HistData> getCoinLatestHistoricalData(int coinId);
 	
-	
-	//TODO user coin stuff
-	
+	/** Retrieves all tracked coin ids from usercoin database
+	 * @param user_id
+	 * @return
+	 */
+	Set<Integer> getUserCoinIDs(int user_id);
 	
 	
 }

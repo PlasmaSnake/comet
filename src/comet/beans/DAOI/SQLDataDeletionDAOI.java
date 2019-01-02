@@ -7,12 +7,9 @@ public interface SQLDataDeletionDAOI {
 		DELETE_ACCOUNT("DELETE FROM accounts WHERE username=?"),
 		DELETE_COIN_BASIC_DATA("DELETE FROM coinbasicinfo where symbol = ?"),
 		DELETE_COIN_HISTORICAL_DATA("DELETE FROM coinhistoricalinfo where symbol = ?"),
-		DELETE_USER_COIN("DELETE FROM usercoins where coin_id=?"),
-		
-		//For user coin deletion
-		GET_USERCOIN_COIN_ID("SELECT coin_id FROM coinbasicinfo where symbol = ? AND user_id = ?");
-		
-		
+		DELETE_USER_COIN("DELETE FROM usercoins where coin_id=? AND user_id =?"),
+		DELETE_ALL_USER_COIN("DELETE FROM usercoins where user_id =?");
+	
 		private String query;
 		private SQL(String s) {
 			this.query = s;
@@ -25,15 +22,16 @@ public interface SQLDataDeletionDAOI {
 	/** Delete account from database
 	 * @param username
 	 */
-	public void deleteAccount(String username);
+	public boolean deleteAccount(String username);
 	
 	/** Delete coin's historical and basic information from database
 	 * @param coinName
 	 */
-	public void deleteCoin(String coinName);
+	public boolean deleteCoin(String coinName);
 	
 	/** Removes the relation of a user and coin from the database table
-	 * @param coinName
+	 * @param coin_id
+	 * @param user_id
 	 */
-	public void removeUserCoin(String coinName);
+	public boolean removeUserCoin(int coin_id, int user_id);	
 }

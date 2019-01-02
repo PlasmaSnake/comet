@@ -2,6 +2,8 @@ package comet.beans.DAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TreeMap;
 
 import comet.beans.Coin;
@@ -48,7 +50,8 @@ public class SQLDataRequestDAO extends ConnectionAbstractDAO implements SQLDataR
 						rs.getString(4),//email
 						rs.getString(5),//fullName
 						rs.getString(6),//country
-						rs.getInt(7));//admin role
+						rs.getInt(7),//admin role
+						rs.getInt(1));//user_id
 			}
 		} catch (SQLException e) { e.printStackTrace();}
 		finally {this.dispose(); }
@@ -71,7 +74,8 @@ public class SQLDataRequestDAO extends ConnectionAbstractDAO implements SQLDataR
 						rs.getString(4),//email
 						rs.getString(5),//fullName
 						rs.getString(6),//country
-						rs.getInt(7));//admin role
+						rs.getInt(7),//admin role
+						rs.getInt(1));//user_id
 				userList.add(user);
 			}
 		} catch (SQLException e) { e.printStackTrace();}
@@ -79,11 +83,6 @@ public class SQLDataRequestDAO extends ConnectionAbstractDAO implements SQLDataR
 		return userList;
 	}
 
-	@Override
-	public boolean getAllCoinInfo(String coinSymbol) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	@Override
 	public Coin getBasicInfo(String coinSymbol) {
 		Coin coin = null;
@@ -105,20 +104,44 @@ public class SQLDataRequestDAO extends ConnectionAbstractDAO implements SQLDataR
 	}
 
 	@Override
-	public ArrayList<HistData> getHistoricalDataFromXToY(String coinSymbol, long timeFrom, long timeTo) {
+	public Coin getBasicInfoById(int coin_id) {
+		Coin coin = null;
+		try {
+			this.connect();
+			ps = conn.prepareStatement(SQL.REQUEST_COIN_BASIC_DATA_BY_ID.getQuery());
+			ps.setInt(1, coin_id);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				coin = new Coin(
+					rs.getInt(1), // coin id
+					rs.getString(2), // Symbol
+					rs.getString(3), // coin name
+					rs.getLong(4)); // max supply
+			}
+		} catch (SQLException e) { e.printStackTrace();}
+		finally { this.dispose(); }
+		return coin;
+	}
+	@Override
+	public ArrayList<HistData> getAllHistoricalData(int coin_id) {
 		//TODO implement for graph
 		ArrayList<HistData> data = null;
 		try {
 			this.connect();
-			ps = conn.prepareStatement(SQL.REQUEST_COIN_HISTORICAL_DATA_FROM_X_TO_Y.getQuery());
-			ps.setString(1, coinSymbol);
-			ps.setLong(2, timeTo); // earlier time
-			ps.setLong(3, timeFrom); // time closest to present 
+			data = new ArrayList<HistData>();
+			ps = conn.prepareStatement(SQL.REQUEST_COIN_ALL_HISTORICAL_DATA.getQuery());
+			ps.setInt(1, coin_id);
 			rs = ps.executeQuery();
-			
 			while(rs.next()) {
-				//add histdata info
-//				HistData info = new HistData(timestamp, low, high, open, close, volumeTo, volumeFrom);
+				HistData info = new HistData(
+						rs.getLong(2), //timestamp, 
+						rs.getDouble(6), //high, 
+						rs.getDouble(5), //low, 
+						rs.getDouble(3), //open, 
+						rs.getDouble(4), //close, 
+						rs.getDouble(7), //volumeTo, 
+						rs.getDouble(8)); //volumeFrom
+				data.add(info);
 			}
 		} catch (SQLException e) { e.printStackTrace();}
 		finally { this.dispose(); }
@@ -128,7 +151,6 @@ public class SQLDataRequestDAO extends ConnectionAbstractDAO implements SQLDataR
 	@Override
 	public TreeMap<String, HistData> getAllCoinsLatestHistoricalData() {
 		TreeMap<String, HistData> data = null;
-		//TODO test
 		try {
 			this.connect();
 			data = new TreeMap<>();
@@ -149,4 +171,45 @@ public class SQLDataRequestDAO extends ConnectionAbstractDAO implements SQLDataR
 		finally { this.dispose(); }
 		return data;
 	}
+	
+	public ArrayList<HistData> getCoinLatestHistoricalData(int coinId) {
+		ArrayList<HistData> data = null;
+		try {
+			this.connect();
+			data = new ArrayList<>();
+			ps = conn.prepareStatement(SQL.REQUEST_COIN_LATEST_HISTORICAL_DATA.getQuery());
+			ps.setInt(1, coinId);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				HistData temp = new HistData(
+						rs.getLong(2), //timestamp, 
+						rs.getDouble(6), //high, 
+						rs.getDouble(5), //low, 
+						rs.getDouble(3), //open, 
+						rs.getDouble(4), //close, 
+						rs.getDouble(7), //volumeTo, 
+						rs.getDouble(8)); //volumeFrom
+				data.add(temp);
+			}
+		} catch (SQLException e) { e.printStackTrace();}
+		finally { this.dispose(); }
+		return data;
+	}
+	
+	public Set<Integer> getUserCoinIDs(int user_id){
+		Set<Integer> data = null;
+		try {
+			this.connect();
+			data = new HashSet<>();
+			ps = conn.prepareStatement(SQL.REQUEST_USER_COINS.getQuery());
+			ps.setInt(1, user_id);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				data.add(rs.getInt(1));
+			}
+		} catch (SQLException e) { e.printStackTrace();}
+		finally {this.dispose();}
+		return data;
+	}
+	
 }

@@ -11,11 +11,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import comet.beans.DAO.SQLDataRequestDAO;
+import comet.beans.Coin;
 import comet.beans.User;
 
 class SQLDataRequestTest{
-	//TODO Finish testing
 	SQLDataRequestDAO sqlDataRequestDAO = new SQLDataRequestDAO();
+	private User userTest;
+	private Coin coinTest;
+	
+	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 	}
@@ -26,6 +30,8 @@ class SQLDataRequestTest{
 
 	@BeforeEach
 	void setUp() throws Exception {
+		userTest = sqlDataRequestDAO.requestUserInfo("admin");
+		coinTest = sqlDataRequestDAO.getBasicInfo("BTC");
 	}
 
 	@AfterEach
@@ -35,14 +41,14 @@ class SQLDataRequestTest{
 	@Test
 	void testValidateUser() {
 		
-		assertTrue(sqlDataRequestDAO.validateUser("admin", "abc123"));
+		assertTrue(sqlDataRequestDAO.validateUser("admin", "abc1234"));
 	}
 
 	@Test
 	void testRequestUserInfo() {
-		User test = sqlDataRequestDAO.requestUserInfo("admin");
-		assertNotNull(test);
+		assertNotNull(userTest);
 	}
+	
 	
 	@Test
 	void testGetAllUsers() {
@@ -51,23 +57,31 @@ class SQLDataRequestTest{
 	}
 
 	@Test
-	void testGetAllCoinInfo() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	void testGetBasicInfo() {
-		assertNotNull(sqlDataRequestDAO.getBasicInfo("BTC"));
+		assertNotNull(coinTest);
 	}
 
 	@Test
-	void testGetHistoricalDataFromXToY() {
-		fail("Not yet implemented");
+	void testGetBasicInfoById() {
+		assertNotNull(sqlDataRequestDAO.getBasicInfoById(coinTest.getCoin_id()));
+	}
+	
+	@Test
+	void testGetAllHistoricalData() {
+		assertNotNull(sqlDataRequestDAO.getAllHistoricalData(coinTest.getCoin_id()));
 	}
 
 	@Test
 	void testGetAllCoinsLatestHistoricalData() {
-		fail("Not yet implemented");
+		assertNotNull(sqlDataRequestDAO.getAllCoinsLatestHistoricalData());
+	}
+	@Test
+	void testGetCoinLatestHistoricalData() {
+		assertNotNull(sqlDataRequestDAO.getCoinLatestHistoricalData(coinTest.getCoin_id()));
 	}
 	
+	@Test
+	void testGetUserCoinIDs() {
+		assertNotNull(sqlDataRequestDAO.getUserCoinIDs(userTest.getUser_id()));
+	}
 }

@@ -4,14 +4,19 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="comet.beans.*, java.util.TreeMap, java.util.Map.Entry, java.util.Date, java.util.ArrayList" %>
 <%
-	//TODO Get user coins and then retrieve their historical data. Then get basic info for each of those coins.
+	//Retrieves user coin ids from database
+	User u = (User) session.getAttribute("userLoggedIn");
+	SQLDataRequestDAO sqlDataRequestDAO = new SQLDataRequestDAO();	
+	u.setSavedCoins(sqlDataRequestDAO.getUserCoinIDs(u.getUser_id()));
 	ArrayList<Coin> coinList = new ArrayList<Coin>();
-	SQLDataRequestDAO sqlDataRequestDAO = new SQLDataRequestDAO();
-	TreeMap<String, HistData> latestData = sqlDataRequestDAO.getAllCoinsLatestHistoricalData();
-	for (Entry<String, HistData> e: latestData.entrySet()) {
-		Coin coin = sqlDataRequestDAO.getBasicInfo(e.getKey());
-		coinList.add(coin);
+	//for each coinid, get basic coin information and historical data of those coins.
+	for(int coin_id:u.getSavedCoins()){
+			Coin coin = sqlDataRequestDAO.getBasicInfoById(coin_id);
+			coin.setDataPoints(sqlDataRequestDAO.getCoinLatestHistoricalData(coin_id));
+			coinList.add(coin);
 	}
+	
+
 %>
 	<table class="table table-striped">
 	  <thead>
@@ -27,16 +32,22 @@
 	  <tbody>
 		<% for(Coin c: coinList){
 			String symbol = c.getSymbol();
+			
 		%>
-		    <tr class='clickable-row' data-href='/comet/coininfo?coin=${symbol}'>
+		    <tr class='clickable-row' data-href='./coininfo?coin=<%=symbol%>'>
 		    <%--TODO: ADD a link to specific coin page --%>
 		      <th scope="row"><% out.print(symbol); %></th>
 		      <td><%=c.getCoinName()%></td>
-		      <td>$<%=String.format("%,.2f",latestData.get(symbol).getHigh()) %></td>
-		      <td>$<%=String.format("%,.2f",latestData.get(symbol).getLow()) %></td>
+		      <td>$<%=String.format("%,.2f",c.getDataPoints().get(0).getHigh()) %></td>
+		      <td>$<%=String.format("%,.2f",c.getDataPoints().get(0).getLow()) %></td>
 		      <td><%=String.format("%,.2f",c.getMaxSupply())%></td>
-		      <td>Last updated on <%=latestData.get(symbol).timestampToDate()%></td>
-		      <td>Remove coin</td> <%-- TODO --%>
+		      <td>Last updated on <%=c.getDataPoints().get(0).timestampToDate()%></td>
+		      <td>
+					<form action="deleteUserCoin" method="post">
+						<input type="hidden" name="coinToDelete" value="<%=c.getCoin_id()%>"> 
+						<button type="submit" name="delete" value="delete" class="btn btn-danger">Remove coin</button>
+					</form>
+				</td>
 		    </tr>
 	    <%} // end of coin list table %>
 	  </tbody>

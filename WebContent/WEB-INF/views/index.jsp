@@ -8,6 +8,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Comet Coin Tracker</title>
+<link href="<c:url value="/resources/stylesheets/css/style.css"/>" type="text/css" rel="stylesheet" />
 <!-- Bootstrap -->
 <link href="<c:url value="/resources/bootstrap/4.1.3/css/bootstrap.min.css"/>" rel="stylesheet" />
 </head>
@@ -19,6 +20,7 @@
 			<br />
 			<div class="alert alert-success">
 				<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+				Click a row to view more information! <br>
 				<strong>Note: </strong> A Max Supply of 0 means infinite supply.
 			</div>
 		</div>

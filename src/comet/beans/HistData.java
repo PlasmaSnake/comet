@@ -26,6 +26,10 @@ public class HistData {
 		this.volumeFrom = volumeFrom;
 	}
 	
+	public String toGoogleLinechart() {
+		return String.format("[%s, %f, %f, %f]", timestampToDate(), high, low, close);
+	}
+	
 	public String timestampToDate() {
 		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(getTimestamp()*1000));
 	}

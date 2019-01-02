@@ -1,5 +1,7 @@
 package comet.Controllers;
 
+import java.sql.SQLException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -9,12 +11,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import comet.beans.User;
+import comet.beans.Coin;
 import comet.beans.Password;
 import comet.beans.DAO.SQLDataDeletionDAO;
 import comet.beans.DAO.SQLDataInsertDAO;
+import comet.beans.DAO.SQLDataRequestDAO;
 
 //TODO If session attribute is empty/null redirect to login page.
 
@@ -22,7 +27,7 @@ import comet.beans.DAO.SQLDataInsertDAO;
 @RequestMapping("/u/")
 public class UserController {
 	
-	// HOME ROUTES
+	// BASIC ROUTES
 	@RequestMapping(value = "")
 	public ModelAndView homepage(HttpServletRequest request, HttpSession session) {
 		ModelAndView mav = new ModelAndView("/UserViews/index-user");
@@ -34,12 +39,11 @@ public class UserController {
 		ModelAndView mav = new ModelAndView("redirect:/u/");
 		return mav;
 	}
-	
 	@RequestMapping("/mycoins")
 	public ModelAndView coinList() {
 		return new ModelAndView("/UserViews/my-coins");
 	}
-
+	
 	@RequestMapping("/contact")
 	public ModelAndView contact() {
 		return new ModelAndView("/UserViews/contact-user");
@@ -52,15 +56,43 @@ public class UserController {
 	}
 	
 	// COIN INFO ROUTES
-	//TODO Figure out get and send data to coin info
-	@RequestMapping(value = "/coin/", method=RequestMethod.GET)
-	public ModelAndView getCoinInfo(@ModelAttribute("queriedCoin") String coinName, HttpSession session) {
+	@RequestMapping(value = "/coininfo", method=RequestMethod.GET)
+	public ModelAndView showCoinInfo(@RequestParam("coin") String coinName, HttpSession session) {
 		ModelAndView mav = new ModelAndView("/UserViews/coin-info-user");
-		mav.addObject("queriedCoin", coinName);
+		SQLDataRequestDAO sqlDataRequestDAO = new SQLDataRequestDAO();
+		Coin coin = sqlDataRequestDAO.getBasicInfo(coinName);
+		mav.addObject("coinBasicInfo", coin);
 		return mav;
 	}
 	
-	// USER COIN LIST AND SETTINGS ROUTES/CRUD
+	// USER COIN LIST CRUD 
+	@RequestMapping(value = "/addToUserCoins", method=RequestMethod.POST)
+	public ModelAndView addUserCoin(@ModelAttribute ("coinToAdd") String coin_id, HttpSession session) {
+		ModelAndView mav = new ModelAndView("/UserViews/my-coins");
+		SQLDataInsertDAO sqlDataInsertDAO = new SQLDataInsertDAO();
+		User u = (User)session.getAttribute("userLoggedIn");
+		int coinID = Integer.parseInt(coin_id);
+		try {
+			sqlDataInsertDAO.assignUserCoin(coinID, u.getUser_id());
+			mav.addObject("userCoinStatus", "Coin added successfully!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return mav;
+	}
+	
+	@RequestMapping(value = "/deleteUserCoin", method=RequestMethod.POST)
+	public ModelAndView deleteUserCoin(@ModelAttribute("coinToDelete") String coin_id, HttpSession session) {
+		ModelAndView mav = new ModelAndView("/UserViews/my-coins");
+		SQLDataDeletionDAO sqlDataDeletionDAO = new SQLDataDeletionDAO();
+		User u = (User)session.getAttribute("userLoggedIn");
+		int coinID = Integer.parseInt(coin_id);
+		sqlDataDeletionDAO.removeUserCoin(coinID, u.getUser_id());
+		mav.addObject("userCoinStatus", "Coin removed successfully!");
+		return mav;
+	}
+	
+	//USER SETTINGS AND CRUD
 	@RequestMapping("/settings")
 	public ModelAndView userSettings(HttpSession session) {
 		ModelAndView mav = new ModelAndView("/UserViews/settings-user");
@@ -68,7 +100,6 @@ public class UserController {
 		return mav;
 	}
 	
-	//USER CRUD
 	@RequestMapping(value="/updatepassword", method=RequestMethod.POST)
 	public ModelAndView settingsUpdatePass(@ModelAttribute("passwordval") @Valid Password p,
 			BindingResult errors,
@@ -147,8 +178,6 @@ public class UserController {
 		mav.addObject("deleted", true);
 		return mav;
 	}
-	
-
 	
 	@ModelAttribute("modifiedUser")
 	public User userCreation(String username, String password, String email, String fullName, String country) {

@@ -78,33 +78,6 @@ public interface SQLDataInsertDAOI {
 	 */
 	boolean updateAccountCountry(String username, String newCountry);
 	
-	///////////////////////////////////////////JSON RESPONSE TEST DATA INSERTION///////////////////////////////////////////////
-	/** Connects to a particular JSON response file. Helper method for parseHistoricalCoinData.
-	 * @return false if unable to connect to a file, true if connects to a file.
-	 */
-	JSONObject connectToHistoricalFile(int fileNumber, String coin) throws Exception;
-	
-	
-	/** Helper method for insertBasicCoinInfo; gets basic information from mined data
-	 * @param coin
-	 * @return JSONObject for parsing data
-	 * @throws Exception
-	 */
-	JSONObject connectToAllCoinsFile()throws Exception;
-	
-	/** Connects to a series of JSON files in a particular coin's folder.
-	 * @return false if unable to connect to a file, true if connects to a file.
-	 */
-	boolean parseHistCoinData(String coin) throws Exception;
-	
-	/** Connects to a JSON file containing basic information of a particular coin
-	 * @return false if unable to connect to a file, true if connects to a file.
-	 */
-	boolean parseBasicCoinData(String coin) throws Exception;
-	
-	/** Takes the information from the JSON response and inserts the data to Accounts table in the database.
-	 * @return false if unable to insert data, true if data is inserted.
-	 */
 	boolean insertAccountData() throws SQLException;
 	
 	/**Takes the information from the JSON response and inserts the data to CoinBasicInfo table in the database.
@@ -134,7 +107,7 @@ public interface SQLDataInsertDAOI {
 	/** Links a user to a coin by inserting a values into UserCoins
 	 * @return false if unable to insert data, true if data is inserted.
 	 */
-	boolean assignUserCoin(String symbol) throws SQLException;
+	boolean assignUserCoin(int coin_id, int user_id) throws SQLException;
 	
 	
 	/** Queries the database for the coin id. Returns -1 if not found.
@@ -143,5 +116,32 @@ public interface SQLDataInsertDAOI {
 	 * @throws SQLException
 	 */
 	int getCoinID(String symbol) throws SQLException;
-
+	
+	///////////////////////////////////////////JSON RESPONSE TEST DATA INSERTION///////////////////////////////////////////////
+	/** Connects to a particular JSON response file. Helper method for parseHistoricalCoinData.
+	 * @return false if unable to connect to a file, true if connects to a file.
+	 */
+	JSONObject connectToHistoricalFile(int fileNumber, String coin) throws Exception;
+	
+	
+	/** Helper method for insertBasicCoinInfo; gets basic information from mined data
+	 * @param coin
+	 * @return JSONObject for parsing data
+	 * @throws Exception
+	 */
+	JSONObject connectToAllCoinsFile()throws Exception;
+	
+	/** Connects to a series of JSON files in a particular coin's folder.
+	 * @return false if unable to connect to a file, true if connects to a file.
+	 */
+	boolean parseHistCoinData(String coin) throws Exception;
+	
+	/** Connects to a JSON file containing basic information of a particular coin
+	 * @return false if unable to connect to a file, true if connects to a file.
+	 */
+	boolean parseBasicCoinData(String coin) throws Exception;
+	
+	/** Takes the information from the JSON response and inserts the data to Accounts table in the database.
+	 * @return false if unable to insert data, true if data is inserted.
+	 */
 }

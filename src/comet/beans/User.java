@@ -6,6 +6,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import comet.beans.DAO.SQLDataRequestDAO;
+
 
 public class User {
 	
@@ -24,11 +26,16 @@ public class User {
 	private String fullName;
 	private String country;
 	private int adminRole;
-	private Set<String> savedCoins;
+	private int user_id;
+	private Set<Integer> savedCoinIds;
+	public int getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
+	}
 	
 	public User() {
-		username = "admin";
-		password = "abc123";
 		setAdminRole(-1);
 	}
 	public User(String username, String password, String email){
@@ -44,9 +51,18 @@ public class User {
 		this.fullName = fullName;
 		this.country = country;
 	}
-	public User(String username, String password, String email, String fullName, String country, int adminRole){
+	public User(String username, String password, String email, String fullName, String country, int adminRole, int user_id){
 		this(username, password, email, fullName, country);
 		this.setAdminRole(adminRole);
+		this.user_id = user_id;
+	}
+	
+	// Get user coin information
+	public Coin getCoinFromSavedCoinID(int coin_id) {
+		Coin coin = new Coin();
+		SQLDataRequestDAO sqlDataRequestDAO = new SQLDataRequestDAO();
+		if(savedCoinIds.contains(coin_id)) coin = sqlDataRequestDAO.getBasicInfoById(coin_id);
+		return coin;
 	}
 	
 	// VALIDATED CHANGES
@@ -103,16 +119,20 @@ public class User {
 		this.country = country;
 	}
 	
-	public Set<String> getSavedCoins() {
-		return savedCoins;
+	public Set<Integer> getSavedCoins() {
+		return savedCoinIds;
 	}
 	
-	public void insertSavedCoin(String coinSymbolToSave) {
-		savedCoins.add(coinSymbolToSave);
+	public void setSavedCoins(Set<Integer> coinIds) {
+		savedCoinIds = coinIds;
 	}
 	
-	public void removeSavedCoin(String symbolToDelete) {
-		savedCoins.remove(symbolToDelete);
+	public void insertSavedCoin(int coinIdToSave) {
+		savedCoinIds.add(coinIdToSave);
+	}
+	
+	public void removeSavedCoin(int coinIdToDelete) {
+		savedCoinIds.remove(coinIdToDelete);
 	}
 	
 	public String getUsername() {
@@ -132,6 +152,22 @@ public class User {
 	}
 	public void setAdminRole(int adminRole) {
 		this.adminRole = adminRole;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) { return true;}
+		
+		if (!(obj instanceof User)) return false;
+		
+		User user = (User) obj;
+		return this.username.equals(user.username) && 
+				this.password.equals(user.password) && 
+				this.email.equals(user.email) && 
+				this.fullName.equals(user.fullName) && 
+				this.country.equals(user.country) &&
+				this.savedCoinIds == user.savedCoinIds && 
+				this.adminRole == user.adminRole;
 	}
 	
 }
