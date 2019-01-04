@@ -20,6 +20,7 @@
 			<br />
 			<div class="alert alert-success">
 				<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+				<h2>Welcome to Comet!</h2> <br>
 				Click a row to view more information! <br>
 				<strong>Note: </strong> A Max Supply of 0 means infinite supply.
 			</div>

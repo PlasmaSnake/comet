@@ -70,3 +70,4 @@ https://wireframe.com
 * Database Access Objects: Refactor them into Models/BeanDAOs instead of CRUD-based DAOS
 * Refine the implementation of MVC and have the Controllers simple, business logic done in the beans, and the views with less code.
 * Table list/Graph in a more user friendly format
+* Figure out why home page (coin list) takes so long to generate
